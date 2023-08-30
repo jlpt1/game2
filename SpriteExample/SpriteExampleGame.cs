@@ -13,6 +13,7 @@ namespace SpriteExample
         private SpriteBatch spriteBatch;
 
         private SlimeGhostSprite slimeGhost;
+        private Texture2D atlas;
 
         /// <summary>
         /// Constructs the game
@@ -44,6 +45,7 @@ namespace SpriteExample
 
             // TODO: use this.Content to load your game content here
             slimeGhost.LoadContent(Content);
+            atlas = Content.Load<Texture2D>("colored_packed");
         }
 
         /// <summary>
@@ -72,6 +74,7 @@ namespace SpriteExample
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             slimeGhost.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(atlas, new Vector2(50, 50), new Rectangle(96, 16, 16, 16), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
