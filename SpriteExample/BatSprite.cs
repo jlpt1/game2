@@ -17,6 +17,9 @@ namespace SpriteExample
         Left = 3,
 
     }
+    /// <summary>
+    /// A class representing a bat sprite
+    /// </summary>
     public class BatSprite
     {
         private Texture2D texture;
@@ -25,7 +28,13 @@ namespace SpriteExample
 
         private short animationFrame = 1;
 
-        private Direction Direction;
+        /// <summary>
+        /// The direction of the bat
+        /// </summary>
+        public Direction Direction;
+        /// <summary>
+        /// Position of the bat
+        /// </summary>
         public Vector2 Position;
 
         /// <summary>
@@ -102,7 +111,7 @@ namespace SpriteExample
             }
 
             //Draw the sprite
-            var source = new Rectangle(0, (int)Direction * 32, 32, 32);
+            var source = new Rectangle(animationFrame*32, (int)Direction * 32, 32, 32);
             spriteBatch.Draw(texture, Position, source, Color.White);
         }
         
