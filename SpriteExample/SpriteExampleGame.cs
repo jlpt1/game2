@@ -117,7 +117,7 @@ namespace SpriteExample
             }
             foreach (var ball in balls) ball.Draw(gameTime, spriteBatch);
             paddleSprite.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 0), Color.Gold);
+            spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 1), Color.Gold);
             ball2.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(bangers, "press ESC to exit!", new Vector2(100, 400), Color.Red);
             spriteBatch.End();
