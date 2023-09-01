@@ -37,6 +37,8 @@ namespace SpriteExample
         /// <param name="content">The content manager ot load with</param>
         public void LoadContent(ContentManager content)
         {
+           
+          
             texture = content.Load<Texture2D>("ball3");
            
     }

@@ -39,10 +39,18 @@ namespace SpriteExample
         /// <param name="content">The content manager ot load with</param>
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("greenball");
-           
-           
-    }
+            Random r = new Random();
+
+            if (r.NextDouble() > 0.5f)
+            {
+                texture = content.Load<Texture2D>("greenball");
+            }
+            else
+            {
+                texture = content.Load<Texture2D>("basketball");
+            }
+
+        }
         /// <summary>
         /// Updates the bat sprite to fly in a pattern
         /// </summary>

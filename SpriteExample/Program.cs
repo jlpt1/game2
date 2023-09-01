@@ -1,3 +1,3 @@
 ﻿
-using var game = new SpriteExample.SpriteExampleGame();
+using var game = new SpriteExample.GameProject();
 game.Run();

@@ -8,23 +8,23 @@ namespace SpriteExample
     /// <summary>
     /// A game demonstrating the use of sprites
     /// </summary>
-    public class SpriteExampleGame : Game
+    public class GameProject : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private PaddleSprite paddleSprite;
         private Texture2D atlas;
-        private BallSprite[] balls;
+        private BallSprite[] eyes;
         private SpriteFont bangers;
         private SpriteFont bangersSmall;
-        private SuperBallSprite ball2;
+        private SuperBallSprite[] balls;
 
 
         /// <summary>
         /// Constructs the game
         /// </summary>
-        public SpriteExampleGame()
+        public GameProject()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -38,10 +38,16 @@ namespace SpriteExample
         {
             // TODO: Add your initialization logic here
             paddleSprite = new PaddleSprite();
-            balls = new BallSprite[10];
-            ball2 = new SuperBallSprite();
-            ball2.Velocity = new Vector2(3, -5);
-            ball2.Position = new Vector2(100, 400);
+            eyes = new BallSprite[10];
+            balls = new SuperBallSprite[8];
+            for (int i = 0; i < 8; i++)
+            {
+                Random r = new Random();
+                balls[i] = new SuperBallSprite();
+                balls[i].Velocity = new Vector2((float)((r.NextDouble() * 10)-5), (float)((r.NextDouble() * 10) - 5));
+                balls[i].Position = new Vector2((float)((r.NextDouble() * 650) - 5), (float)((r.NextDouble() * 450) - 5));
+            }
+            
 
             for (int i = 0; i < 10; i++)
             {
@@ -50,7 +56,7 @@ namespace SpriteExample
                 
 
 
-                balls[i] = new BallSprite() { Position = new Vector2((float)r.NextDouble() * 800, (float)r.NextDouble() * 400), animationFrame = (short)r.Next(0,8)};
+                eyes[i] = new BallSprite() { Position = new Vector2((float)r.NextDouble() * 800, (float)r.NextDouble() * 400), animationFrame = (short)r.Next(0,8)};
             }
           
             base.Initialize();
@@ -65,9 +71,9 @@ namespace SpriteExample
 
             // TODO: use this.Content to load your game content here
             paddleSprite.LoadContent(Content);
-            ball2.LoadContent(Content);
+            foreach (var ball in balls) ball.LoadContent(Content);
             atlas = Content.Load<Texture2D>("colored_packed");
-            foreach (var bat in balls) bat.LoadContent(Content);
+            foreach (var eye in eyes) eye.LoadContent(Content);
 
             bangers = Content.Load<SpriteFont>("bangers");
             bangersSmall = Content.Load<SpriteFont>("bangers2");
@@ -84,8 +90,8 @@ namespace SpriteExample
 
             // TODO: Add your update logic here
             paddleSprite.Update(gameTime);
-            ball2.Update(gameTime);
-            foreach (var bat in balls) bat.Update(gameTime);
+            foreach (var ball in balls) ball.Update(gameTime);
+            foreach (var eye in eyes) eye.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -115,10 +121,10 @@ namespace SpriteExample
                     }
                 }
             }
-            foreach (var ball in balls) ball.Draw(gameTime, spriteBatch);
+            foreach (var eye in eyes) eye.Draw(gameTime, spriteBatch);
             paddleSprite.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 1), Color.Gold);
-            ball2.Draw(gameTime, spriteBatch);
+            foreach (var ball in balls) ball.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(bangers, "press ESC to exit!", new Vector2(100, 400), Color.Red);
             spriteBatch.End();
 
