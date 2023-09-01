@@ -20,7 +20,7 @@ namespace SpriteExample
         private double rotation;
      
 
-        private Vector2 position = new Vector2(400, 200);
+        private Vector2 position = new Vector2(400, 300);
 
         /// <summary>
         /// Loads the sprite texture using the provided ContentManager

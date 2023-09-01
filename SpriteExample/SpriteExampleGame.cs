@@ -13,11 +13,12 @@ namespace SpriteExample
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private PaddleSprite slimeGhost;
+        private PaddleSprite paddleSprite;
         private Texture2D atlas;
         private BallSprite[] balls;
         private SpriteFont bangers;
         private SpriteFont bangersSmall;
+        private SuperBallSprite ball2;
 
 
         /// <summary>
@@ -36,8 +37,11 @@ namespace SpriteExample
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            slimeGhost = new PaddleSprite();
+            paddleSprite = new PaddleSprite();
             balls = new BallSprite[10];
+            ball2 = new SuperBallSprite();
+            ball2.Velocity = new Vector2(3, -5);
+            ball2.Position = new Vector2(100, 400);
 
             for (int i = 0; i < 10; i++)
             {
@@ -60,7 +64,8 @@ namespace SpriteExample
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            slimeGhost.LoadContent(Content);
+            paddleSprite.LoadContent(Content);
+            ball2.LoadContent(Content);
             atlas = Content.Load<Texture2D>("colored_packed");
             foreach (var bat in balls) bat.LoadContent(Content);
 
@@ -78,11 +83,12 @@ namespace SpriteExample
                 Exit();
 
             // TODO: Add your update logic here
-            slimeGhost.Update(gameTime);
+            paddleSprite.Update(gameTime);
+            ball2.Update(gameTime);
             foreach (var bat in balls) bat.Update(gameTime);
             base.Update(gameTime);
         }
-        private int i = 0;
+
         /// <summary>
         /// Draws the game world
         /// </summary>
@@ -93,14 +99,27 @@ namespace SpriteExample
             bangers.MeasureString("This is a string to measure");
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            
-            spriteBatch.Draw(atlas, new Vector2(50, 50), new Rectangle(i*16, 16, 16, 16), Color.White);
-            i++;
-            foreach (var bat in balls) bat.Draw(gameTime, spriteBatch);
-            slimeGhost.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 50), Color.Gold);
+            for (int temp1 = 0; temp1 < 20; temp1++)
+            {
+                for (int temp2 = 0; temp2 < 10; temp2++)
+                {
 
-            spriteBatch.DrawString(bangersSmall, "press ESC to exit!", new Vector2(250, 400), Color.Red);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            spriteBatch.Draw(atlas, new Vector2(temp1*48+(i * 16), temp2*48+(j * 16)), new Rectangle(i * 16, 256 + j * 16, 16, 16), Color.White);
+                        }
+
+
+                    }
+                }
+            }
+            foreach (var ball in balls) ball.Draw(gameTime, spriteBatch);
+            paddleSprite.Draw(gameTime, spriteBatch);
+            spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 0), Color.Gold);
+            ball2.Draw(gameTime, spriteBatch);
+            spriteBatch.DrawString(bangers, "press ESC to exit!", new Vector2(100, 400), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
