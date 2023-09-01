@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace SpriteExample
 {
@@ -12,10 +13,11 @@ namespace SpriteExample
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private SlimeGhostSprite slimeGhost;
+        private PaddleSprite slimeGhost;
         private Texture2D atlas;
-        private BatSprite[] bats;
+        private BallSprite[] balls;
         private SpriteFont bangers;
+        private SpriteFont bangersSmall;
 
 
         /// <summary>
@@ -34,13 +36,19 @@ namespace SpriteExample
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            slimeGhost = new SlimeGhostSprite();
-            bats = new BatSprite[]
+            slimeGhost = new PaddleSprite();
+            balls = new BallSprite[10];
+
+            for (int i = 0; i < 10; i++)
             {
-                new BatSprite(){Position = new Vector2(100,100),Direction = Direction.Down},
-                new BatSprite(){Position = new Vector2(400,400),Direction = Direction.Up},
-                new BatSprite(){Position = new Vector2(200,500),Direction = Direction.Left}
-            };
+                Random r = new Random();
+              
+                
+
+
+                balls[i] = new BallSprite() { Position = new Vector2((float)r.NextDouble() * 800, (float)r.NextDouble() * 400), animationFrame = (short)r.Next(0,8)};
+            }
+          
             base.Initialize();
         }
 
@@ -54,9 +62,10 @@ namespace SpriteExample
             // TODO: use this.Content to load your game content here
             slimeGhost.LoadContent(Content);
             atlas = Content.Load<Texture2D>("colored_packed");
-            foreach (var bat in bats) bat.LoadContent(Content);
+            foreach (var bat in balls) bat.LoadContent(Content);
 
             bangers = Content.Load<SpriteFont>("bangers");
+            bangersSmall = Content.Load<SpriteFont>("bangers2");
         }
 
         /// <summary>
@@ -70,25 +79,28 @@ namespace SpriteExample
 
             // TODO: Add your update logic here
             slimeGhost.Update(gameTime);
-            foreach (var bat in bats) bat.Update(gameTime);
+            foreach (var bat in balls) bat.Update(gameTime);
             base.Update(gameTime);
         }
-
+        private int i = 0;
         /// <summary>
         /// Draws the game world
         /// </summary>
         /// <param name="gameTime">the measured game time</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
             bangers.MeasureString("This is a string to measure");
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             
-            spriteBatch.Draw(atlas, new Vector2(50, 50), new Rectangle(96, 16, 16, 16), Color.White);
-            foreach (var bat in bats) bat.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(atlas, new Vector2(50, 50), new Rectangle(i*16, 16, 16, 16), Color.White);
+            i++;
+            foreach (var bat in balls) bat.Draw(gameTime, spriteBatch);
             slimeGhost.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(bangers, $"{gameTime.TotalGameTime:c}", new Vector2(2, 2), Color.Gold);
+            spriteBatch.DrawString(bangers, "Paddle ball!", new Vector2(200, 50), Color.Gold);
+
+            spriteBatch.DrawString(bangersSmall, "press ESC to exit!", new Vector2(250, 400), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
